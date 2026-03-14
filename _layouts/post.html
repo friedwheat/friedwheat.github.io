@@ -1,0 +1,103 @@
+---
+layout: default
+---
+
+<main class="site-main">
+  <div class="post-layout">
+
+    <!-- Article -->
+    <article>
+      <header class="post-header">
+        <div class="post-meta">
+          {% if page.categories.first %}
+            <span class="post-category">{{ page.categories.first }}</span>
+          {% endif %}
+          <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y年%m月%d日" }}</time>
+          {% if page.author %}<span>· {{ page.author }}</span>{% endif %}
+        </div>
+        <h1>{{ page.title }}</h1>
+        {% if page.description %}
+          <p class="post-description">{{ page.description }}</p>
+        {% endif %}
+      </header>
+
+      {% if page.cover_image %}
+        <img class="post-cover" src="{{ page.cover_image | relative_url }}" alt="{{ page.title }}" />
+      {% endif %}
+
+      <div class="post-content">
+        {{ content }}
+      </div>
+
+      <!-- Tags -->
+      {% if page.tags.size > 0 %}
+        <footer class="post-footer">
+          {% for tag in page.tags %}
+            <span class="post-tag">#{{ tag }}</span>
+          {% endfor %}
+        </footer>
+      {% endif %}
+
+      <!-- Prev / Next navigation -->
+      {% if page.previous or page.next %}
+        <nav class="post-nav">
+          {% if page.next %}
+            <div class="post-nav-item prev">
+              <div class="post-nav-label">← 上一篇</div>
+              <a class="post-nav-title" href="{{ page.next.url | relative_url }}">{{ page.next.title }}</a>
+            </div>
+          {% else %}
+            <div></div>
+          {% endif %}
+          {% if page.previous %}
+            <div class="post-nav-item next">
+              <div class="post-nav-label">下一篇 →</div>
+              <a class="post-nav-title" href="{{ page.previous.url | relative_url }}">{{ page.previous.title }}</a>
+            </div>
+          {% endif %}
+        </nav>
+      {% endif %}
+    </article>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <!-- About card -->
+      <div class="sidebar-section">
+        <p class="sidebar-title">关于博主</p>
+        <p style="font-size:0.88rem;color:var(--color-muted);line-height:1.6">
+          欢迎来到 {{ site.author }} 的个人博客，在这里分享技术心得、生活感悟与读书笔记。
+        </p>
+      </div>
+
+      <!-- Recent posts -->
+      {% if site.posts.size > 0 %}
+      <div class="sidebar-section">
+        <p class="sidebar-title">最新文章</p>
+        <ul class="sidebar-links">
+          {% for post in site.posts limit:5 %}
+          <li>
+            <a href="{{ post.url | relative_url }}"
+               {% if post.url == page.url %}style="color:var(--color-accent)"{% endif %}>
+              {{ post.title }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <!-- Tags -->
+      {% if page.tags.size > 0 %}
+      <div class="sidebar-section">
+        <p class="sidebar-title">本文标签</p>
+        <div class="sidebar-tags">
+          {% for tag in page.tags %}
+            <span class="tag">{{ tag }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </aside>
+
+  </div>
+</main>
