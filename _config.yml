@@ -1,0 +1,50 @@
+title: FriedWheat's Blog
+description: 分享技术、生活与思考
+author: FriedWheat
+email: ""
+url: "https://friedwheat.github.io"
+baseurl: ""
+
+# Build settings
+theme: null
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-paginate
+
+# Permalink style
+permalink: /posts/:year/:month/:day/:title/
+
+# Markdown
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Exclude from build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .bundle
+  - .jekyll-cache
+  - README.md
+
+# Pagination
+paginate: 5
+paginate_path: "/page/:num/"
+
+# Social links (optional)
+github_username: friedwheat
+twitter_username: ""
+
+# Default front matter
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "FriedWheat"

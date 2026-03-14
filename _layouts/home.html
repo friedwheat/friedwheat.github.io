@@ -1,0 +1,118 @@
+---
+layout: default
+---
+
+<!-- Hero Banner -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-avatar">🌾</div>
+    <h1>{{ site.title }}</h1>
+    <p>{{ site.description }}</p>
+    <div class="hero-tags">
+      <span class="tag">💻 技术</span>
+      <span class="tag">📝 随笔</span>
+      <span class="tag">🎮 生活</span>
+      <span class="tag">📚 读书</span>
+    </div>
+  </div>
+</section>
+
+<!-- Posts + Sidebar -->
+<main class="site-main">
+  <div class="content-grid">
+
+    <!-- Post List -->
+    <section>
+      {% if paginator.posts %}
+        {% assign posts = paginator.posts %}
+      {% else %}
+        {% assign posts = site.posts %}
+      {% endif %}
+
+      {% if posts.size == 0 %}
+        <div class="empty-state">
+          <h2>暂无文章</h2>
+          <p>敬请期待！</p>
+        </div>
+      {% else %}
+        <ul class="post-list">
+          {% for post in posts %}
+          <li class="post-item">
+            <div class="post-meta">
+              {% if post.categories.first %}
+                <span class="post-category">{{ post.categories.first }}</span>
+              {% endif %}
+              <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y年%m月%d日" }}</time>
+              {% if post.reading_time %}
+                <span>· {{ post.reading_time }} min read</span>
+              {% endif %}
+            </div>
+            <h2 class="post-title">
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </h2>
+            {% if post.excerpt %}
+              <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 40 }}</p>
+            {% endif %}
+            <a class="read-more" href="{{ post.url | relative_url }}">阅读全文</a>
+          </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <!-- Pagination -->
+      {% if paginator.total_pages > 1 %}
+        <nav class="pagination">
+          {% if paginator.previous_page %}
+            <a href="{{ paginator.previous_page_path | relative_url }}">&laquo;</a>
+          {% endif %}
+          {% for i in (1..paginator.total_pages) %}
+            {% if i == paginator.page %}
+              <span class="current">{{ i }}</span>
+            {% else %}
+              <a href="{% if i == 1 %}{{ '/' | relative_url }}{% else %}{{ site.paginate_path | replace: ':num', i | relative_url }}{% endif %}">{{ i }}</a>
+            {% endif %}
+          {% endfor %}
+          {% if paginator.next_page %}
+            <a href="{{ paginator.next_page_path | relative_url }}">&raquo;</a>
+          {% endif %}
+        </nav>
+      {% endif %}
+    </section>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <!-- About card -->
+      <div class="sidebar-section">
+        <p class="sidebar-title">关于博主</p>
+        <p style="font-size:0.88rem;color:var(--color-muted);line-height:1.6">
+          欢迎来到 {{ site.author }} 的个人博客，在这里分享技术心得、生活感悟与读书笔记。
+        </p>
+      </div>
+
+      <!-- Tags -->
+      {% if site.tags.size > 0 %}
+      <div class="sidebar-section">
+        <p class="sidebar-title">标签</p>
+        <div class="sidebar-tags">
+          {% for tag in site.tags %}
+            <span class="tag">{{ tag[0] }} <small>({{ tag[1].size }})</small></span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Recent posts -->
+      {% if site.posts.size > 0 %}
+      <div class="sidebar-section">
+        <p class="sidebar-title">最新文章</p>
+        <ul class="sidebar-links">
+          {% for post in site.posts limit:5 %}
+          <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </aside>
+
+  </div>
+</main>
